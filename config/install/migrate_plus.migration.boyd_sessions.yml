@@ -21,10 +21,15 @@ source:
       name: name
       label: 'Name'
       selector: /attributes/name
+    -
+        name: uuid
+        label: 'Name'
+        selector: /id
 
 process:
   tid: id
   name: name
+  uuid: uuid
 destination:
   plugin: entity:taxonomy_term
   default_bundle: sessions

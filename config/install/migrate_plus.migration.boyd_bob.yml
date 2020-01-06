@@ -1,6 +1,6 @@
 # Migration configuration for imported images.
-id: boyd_im
-label: Import images from Drupal
+id: boyd_bob
+label: Import images from Drupal Bob
 
 migration_group: boydmigroup
 migration_dependencies: {}
