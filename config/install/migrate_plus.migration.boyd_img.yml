@@ -1,0 +1,51 @@
+id: boyd_img
+label: 'My Image Migration'
+migration_group: boydmigroup
+source:
+  plugin: directory
+  path: modules/custom/boydmigrate/oldboyd
+  constants:
+    dest_prefix: 'sites/default/files/'
+process:
+  _source_file_path:
+    -
+      plugin: urlencode
+      source: path
+  _dest_file_path:
+    -
+      plugin: concat
+      source:
+        - constants/dest_prefix
+        - relative_path
+    -
+      plugin: urlencode
+  uri:
+    plugin: file_copy
+    source:
+      - '@_source_file_path'
+      - '@_dest_file_path'
+  status:
+    -
+      plugin: default_value
+      default_value: 1
+  _timestamp:
+    -
+      plugin: callback
+      callable: time
+  created: created
+  changed: changed
+  uid:
+    -
+      plugin: default_value
+      default_value: 0
+
+destination:
+  plugin: 'entity:file'
+
+# When a module is creating a custom content type it needs to add an 
+# enforced dependency to itself, otherwise the content type will persist
+# after the module is disabled. See: https://www.drupal.org/node/2629516.
+dependencies:
+  enforced:
+    module:
+      - boydmigrate

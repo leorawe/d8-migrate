@@ -1,0 +1,69 @@
+# Migration configuration for imported images.
+id: boyd_im
+label: Import images from Drupal
+
+migration_group: boydmigroup
+migration_dependencies: {}
+
+destination:
+  plugin: entity:file
+
+source:
+  plugin: url
+  data_fetcher_plugin: file
+  data_parser_plugin: json
+  urls: 'public://json/imgboyd.json'
+  track_changes: true
+  ids:
+    id:
+      type: string
+
+  item_selector: included/
+
+  fields:
+    -
+      name: id
+      label: 'id'
+      selector: /data/id
+    -
+      name: fid
+      label: 'fid'
+      selector: /data/attributes/fid
+    -
+      name: uuid
+      label: 'uuid'
+      selector: /data/attributes/uuid
+    -
+      name: filename
+      label: 'filename'
+      selector: /data/attributes/filename
+    -
+      name: status
+      label: 'status'
+      selector: /data/attributes/status
+    -
+      name: timestamp
+      label: 'timestamp'
+      selector: /data/attributes/timestamp
+    -
+      name: uid
+      label: 'uid'
+      selector: /data/attributes/uid
+    -
+      name: uri
+      label: 'Uri'
+      selector: /data/attributes/uri
+    -
+      name: url
+      label: 'Url'
+      selector: /data/attributes/url
+
+process:
+
+  filename: filename
+  filemime: filemime
+  status: status
+  created: timestamp
+  changed: timestamp
+  uid: uid
+  uuid: id

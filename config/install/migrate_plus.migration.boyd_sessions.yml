@@ -1,0 +1,38 @@
+id: boyd_sessions
+label: 'Sessions taxonomy migration for local JSON'
+migration_group: boydmigroup
+source:
+  plugin: url
+  data_fetcher_plugin: file
+  data_parser_plugin: json
+  include_raw_data: true
+  item_selector: data
+  urls: 'public://json/sessions.json'
+  track_changes: true
+  ids:
+    id:
+      type: integer
+  fields:
+    -
+      name: id
+      label: 'Term ID'
+      selector: /attributes/drupal_internal__tid
+    -
+      name: name
+      label: 'Name'
+      selector: /attributes/name
+
+process:
+  tid: id
+  name: name
+destination:
+  plugin: entity:taxonomy_term
+  default_bundle: sessions
+
+# When a module is creating a custom content type it needs to add an 
+# enforced dependency to itself, otherwise the content type will persist
+# after the module is disabled. See: https://www.drupal.org/node/2629516.
+dependencies:
+  enforced:
+    module:
+      - boydmigrate

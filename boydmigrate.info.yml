@@ -1,0 +1,6 @@
+name: "Boyd Migration"
+type: module
+description: "take old Boyd into new Boyd"
+core: 8.x
+dependencies:
+  - migrate

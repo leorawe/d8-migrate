@@ -1,0 +1,107 @@
+id: boyd_articles
+label: 'Articles migration for local JSON'
+migration_group: boydmigroup
+source:
+  plugin: url
+  data_fetcher_plugin: file
+  data_parser_plugin: json
+  include_raw_data: true
+  item_selector: data
+  urls: 'public://json/articles.json'
+  track_changes: true
+  ids:
+    nid:
+      type: integer
+  fields:
+    -
+      name: nid
+      label: 'Nid'
+      selector: /attributes/drupal_internal__nid
+    -
+      name: title
+      label: 'Title'
+      selector: /attributes/title
+    -
+      name: created
+      label: 'Created'
+      selector: /attributes/created
+    -
+      name: changed
+      label: 'Changed'
+      selector: /attributes/changed
+    -
+      name: alias
+      label: 'Alias'
+      selector: /attributes/path/alias
+    -
+      name: body
+      label: 'Body'
+      selector: /attributes/body/value
+    -
+      name: summary
+      label: 'Summary'
+      selector: /attributes/body/summary
+    -
+      name: author
+      label: 'Article Author'
+      selector: /attributes/field_article_author
+    -
+      name: imageid
+      label: 'Image Id'
+      selector: /attributes/field_image/id
+    -
+      name: imagealt
+      label: 'Image Alt'
+      selector: /attributes/field_image/meta/alt
+    -
+      name: session
+      label: 'Session'
+      selector: /attributes/field_session/data/id
+process:
+  nid: nid
+  title: title
+  created: date 
+  changed: date
+  'path/alias': alias
+  'body/format': 
+    plugin: default_value 
+    default_value: sci_format
+  'body/value': body
+  'body/summary': summary
+  field_article_author: author
+  'field_session/target_id': session
+  'field_image/meta/alt': imagealt
+  # field_image:
+  #   plugin: sub_process
+  #   source: field_image
+  #   process:
+  #     target_id:
+  #       plugin: migration_lookup
+  #       migration: boyd_img
+  #       source: filename
+  field_session:
+    plugin: migration_lookup
+    migration: boyd_sessions
+    source: tid
+  sticky:
+    plugin: default_value
+    default_value: 0
+  langcode: 
+    plugin: default_value 
+    default_value: en
+  uid: 
+    plugin: default_value 
+    default_value: 1
+destination:
+  plugin: entity:node
+  default_bundle: article
+
+# When a module is creating a custom content type it needs to add an 
+# enforced dependency to itself, otherwise the content type will persist
+# after the module is disabled. See: https://www.drupal.org/node/2629516.
+dependencies:
+  enforced:
+    module:
+      - boydmigrate
+      - boyd_img
+      - boyd_sessions
