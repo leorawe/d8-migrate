@@ -54,14 +54,14 @@ source:
       label: 'Image Alt'
       selector: /attributes/field_image/meta/alt
     -
-      name: session
+      name: sessionid
       label: 'Session'
       selector: /attributes/field_session/data/id
 process:
   nid: nid
   title: title
-  created: date 
-  changed: date
+  created: timestamp 
+  changed: timestamp
   'path/alias': alias
   'body/format': 
     plugin: default_value 
@@ -69,8 +69,8 @@ process:
   'body/value': body
   'body/summary': summary
   field_article_author: author
-  'field_session/target_id': session
-  'field_image/meta/alt': imagealt
+  # 'field_session/target_id': session
+  # 'field_image/meta/alt': imagealt
   # field_image:
   #   plugin: sub_process
   #   source: field_image
@@ -80,9 +80,17 @@ process:
   #       migration: boyd_img
   #       source: filename
   field_session:
-    plugin: migration_lookup
-    migration: boyd_sessions
-    source: tid
+    - plugin: skip_on_empty
+      source: sessionid
+      method: process
+      message: 'No session listed.'
+    # - plugin: entity_generate
+    #   lookupBundleKey: tid
+    #   lookupBundle: sessions
+    - plugin: migration_lookup
+      migration: boyd_sessions
+      source: tid
+
   sticky:
     plugin: default_value
     default_value: 0
@@ -103,5 +111,5 @@ dependencies:
   enforced:
     module:
       - boydmigrate
-      - boyd_img
+      # - boyd_img
       - boyd_sessions
