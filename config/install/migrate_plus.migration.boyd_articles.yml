@@ -45,16 +45,8 @@ source:
       name: author
       label: 'Article Author'
       selector: /attributes/field_article_author
-    # -
-    #   name: imageid
-    #   label: 'Image Id'
-    #   selector: /attributes/field_image/id
-    # -
-    #   name: imagealt
-    #   label: 'Image Alt'
-    #   selector: /attributes/field_image/meta/alt
     -
-      name: id
+      name: sessionid
       label: 'Session'
       selector: /relationships/field_session/data/id
 process:
@@ -69,20 +61,15 @@ process:
   'body/value': body
   'body/summary': summary
   field_article_author: author
-  #'field_session/0/target_id': tid
-  # 'field_image/meta/alt': imagealt
-  # field_image:
-  #   plugin: sub_process
-  #   source: field_image
-  #   process:
-  #     target_id:
-  #       plugin: migration_lookup
-  #       migration: boyd_img
-  #       source: filename
+
   field_session:
-    plugin: migration_lookup
-    migration: boyd_sessions
-    source: id
+    plugin: sub_process
+    source: sessionid
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: boyd_sessions
+        source: id
 
   sticky:
     plugin: default_value

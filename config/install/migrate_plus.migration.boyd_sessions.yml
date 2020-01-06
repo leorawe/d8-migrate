@@ -11,7 +11,7 @@ source:
   track_changes: true
   ids:
     id:
-      type: integer
+      type: string
   fields:
     -
       name: id
@@ -22,14 +22,15 @@ source:
       label: 'Name'
       selector: /attributes/name
     -
-        name: uuid
-        label: 'Name'
-        selector: /id
+      name: uuid
+      label: 'uuid'
+      selector: /id
 
 process:
   tid: id
   name: name
   uuid: uuid
+
 destination:
   plugin: entity:taxonomy_term
   default_bundle: sessions
