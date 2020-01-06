@@ -1,0 +1,78 @@
+id: boyd_gallery
+label: 'Gallery Pages migration for local JSON'
+migration_group: boydmigroup
+source:
+  plugin: url
+  data_fetcher_plugin: file
+  data_parser_plugin: json
+  include_raw_data: true
+  item_selector: data
+  urls: 'public://json/gallery.json'
+  track_changes: true
+  ids:
+    nid:
+      type: integer
+  fields:
+    -
+      name: nid
+      label: 'Nid'
+      selector: /attributes/drupal_internal__nid
+    -
+      name: title
+      label: 'Title'
+      selector: /attributes/title
+    -
+      name: created
+      label: 'Created'
+      selector: /attributes/created
+    -
+      name: changed
+      label: 'Changed'
+      selector: /attributes/changed
+    -
+      name: alias
+      label: 'Alias'
+      selector: /attributes/path/alias
+    -
+      name: body
+      label: 'Body'
+      selector: /attributes/body/value
+    -
+      name: summary
+      label: 'Summary'
+      selector: /attributes/body/summary
+
+process:
+  nid: nid
+  title: title
+  created: created
+  changed: changed
+  'path/alias': alias
+  'body/format': 
+    plugin: default_value 
+    default_value: sci_format
+  'body/value': body
+  'body/summary': summary
+
+  sticky:
+    plugin: default_value
+    default_value: 0
+  langcode: 
+    plugin: default_value 
+    default_value: en
+  uid: 
+    plugin: default_value 
+    default_value: 1
+destination:
+  plugin: entity:node
+  default_bundle: gallery_page
+
+# When a module is creating a custom content type it needs to add an 
+# enforced dependency to itself, otherwise the content type will persist
+# after the module is disabled. See: https://www.drupal.org/node/2629516.
+dependencies:
+  enforced:
+    module:
+      - boydmigrate
+      # - boyd_img
+      # - boyd_sessions
