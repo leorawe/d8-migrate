@@ -45,15 +45,20 @@ source:
 process:
   nid: nid
   title: title
-  'created/value': timestamp
-  'changed/value': timestamp
-  # 'changed/value':
-  #   plugin: format_date
-  #   from_format: 'YYYY-MM-DD\Thh:mm+00:00'
-  #   to_format: 'U'
-  #   settings:
-  #     validate_format: false
-  #   source: changed
+  'created/value':
+    plugin: format_date
+    from_format: 'Y-m-d\TH:i:sT'
+    to_format: 'U'
+    settings:
+      validate_format: false
+    source: created
+  'changed/value':
+    plugin: format_date
+    from_format: 'Y-m-d\TH:i:sT'
+    to_format: 'U'
+    settings:
+      validate_format: false
+    source: changed
   'path/alias': alias
   'body/format': 
     plugin: default_value 
