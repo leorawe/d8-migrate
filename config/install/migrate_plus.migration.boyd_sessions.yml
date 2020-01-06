@@ -10,11 +10,11 @@ source:
   urls: 'public://json/sessions.json'
   track_changes: true
   ids:
-    id:
-      type: string
+    tid:
+      type: integer
   fields:
     -
-      name: id
+      name: tid
       label: 'Term ID'
       selector: /attributes/drupal_internal__tid
     -
@@ -27,7 +27,7 @@ source:
       selector: /id
 
 process:
-  tid: id
+  tid: tid
   name: name
   uuid: uuid
 
