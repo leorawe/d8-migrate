@@ -49,6 +49,10 @@ source:
       name: sessionid
       label: 'Session'
       selector: /relationships/field_session/data/id
+    -
+      name: session_path
+      label: 'Session'
+      selector: /relationships/field_session/links/related
 process:
   nid: nid
   title: title
@@ -74,14 +78,13 @@ process:
   'body/summary': summary
   field_article_author: author
 
-  field_session:
-    plugin: sub_process
-    source: sessionid
-    process:
-      target_id:
-        plugin: migration_lookup
-        migration: boyd_sessions
-        source: uuid
+  # field_session:
+  #   plugin: callback
+  #   callable: var_dump
+  #   source: session_path
+  #  field_session/target_id:
+  #      plugin: find_tid
+  #      source: session_path
 
   sticky:
     plugin: default_value

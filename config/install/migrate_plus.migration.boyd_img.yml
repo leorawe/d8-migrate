@@ -28,12 +28,23 @@ process:
     -
       plugin: default_value
       default_value: 1
-  _timestamp:
-    -
-      plugin: callback
-      callable: time
-  created: created
-  changed: changed
+  # _timestamp:
+  #   -
+  #     plugin: callback
+  #     callable: time
+  'created/value':
+    plugin: format_date
+    from_format: 'Y-m-d\TH:i:sT'
+    to_format: 'U'
+    settings:
+      validate_format: false
+    source: created
+  'changed/value':
+    plugin: format_date
+    from_format: 'Y-m-d\TH:i:sT'
+    to_format: 'U'
+    settings:
+      validate_format: false
   uid:
     -
       plugin: default_value
